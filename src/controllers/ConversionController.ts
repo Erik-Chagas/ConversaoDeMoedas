@@ -34,7 +34,7 @@ class ConversionController{
     }
 
     async handleGetOneConversion(req: Request, res: Response){
-        const { id } = req.body
+        const { id } = req.params
 
         if(id === undefined){
             return res.status(400).json({
@@ -43,7 +43,7 @@ class ConversionController{
             })
         }
 
-        const result = await GetOneConversion.getOne(id)
+        const result = await GetOneConversion.getOne(parseInt(id))
 
         if(result instanceof Error){
             return res.status(400).json({
@@ -56,7 +56,7 @@ class ConversionController{
     }
 
     async handleDeleteConversion(req: Request, res: Response){
-        const { id } = req.body
+        const { id } = req.params
 
         if(id === undefined){
             return res.status(400).json({
@@ -65,7 +65,7 @@ class ConversionController{
             })
         }
 
-        const result = await DeleteConversion.delete(id)
+        const result = await DeleteConversion.delete(parseInt(id))
 
         if(result instanceof Error){
             return res.status(400).json({

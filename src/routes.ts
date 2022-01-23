@@ -1,11 +1,11 @@
 import { Router } from "express"
-import MainController from "./controllers/MainController"
+import ConversionController from "./controllers/ConversionController"
 
 const routes = Router()
 
-routes.post('/create', MainController.handleCreateConversion)
-routes.get('/', MainController.handleGetAllConversions)
-routes.get('/getone', MainController.handleGetOneConversion)
-routes.delete('/delete', MainController.handleDeleteConversion)
+routes.post('/conversions', ConversionController.handleCreateConversion)
+routes.get('/', ConversionController.handleGetAllConversions)
+routes.get('/conversions/:id', ConversionController.handleGetOneConversion)
+routes.delete('/conversions/:id', ConversionController.handleDeleteConversion)
 
 export { routes }

@@ -23,7 +23,7 @@ describe('Testing API calls', () => {
     it('Should be able to create a new conversion', async () => {
         const { moedaOriginal, moedaDaConversão, valorEnviado } = exampleListObject
 
-        const response = await request(app).post('/create').send({moedaOriginal, moedaDaConversão, valorEnviado})
+        const response = await request(app).post('/conversions').send({moedaOriginal, moedaDaConversão, valorEnviado})
         exampleListObject = response.body
 
         expect(response.status).toBe(200)
@@ -42,7 +42,7 @@ describe('Testing API calls', () => {
     it("Should return the conversion of the specified id", async () => {
         const { id } = exampleListObject
 
-        const response = await request(app).get('/getone').send({id})
+        const response = await request(app).get(`/conversions/${id}`)
 
         expect(response.status).toBe(200)
         expect(response.body).toMatchObject(exampleListObject)
@@ -51,7 +51,7 @@ describe('Testing API calls', () => {
     it("Should return an error for not finding the conversion of specified id for get", async () => {
         const id = Math.floor(Math.random() * 10000) + 1000
 
-        const response = await request(app).get('/getone').send({id})
+        const response = await request(app).get(`/conversions/${id}`)
 
         expect(response.status).toBe(400)
         expect(response.body.message).toEqual('Conversão não encontrada')
@@ -61,8 +61,8 @@ describe('Testing API calls', () => {
     it("Should delete conversion of the specified id", async () => {
         const { id } = exampleListObject
 
-        const response = await request(app).delete('/delete').send({id})
-        const checkDelete = await request(app).get('/getone').send({id})
+        const response = await request(app).delete(`/conversions/${id}`)
+        const checkDelete = await request(app).get(`/conversions/${id}`)
 
         expect(response.status).toBe(200)
 
@@ -73,7 +73,7 @@ describe('Testing API calls', () => {
     it("Should return an error for not finding the conversion of specified id for delete", async () => {
         const id = Math.floor(Math.random() * 10000) + 1000
 
-        const response = await request(app).delete('/delete').send({id})
+        const response = await request(app).delete(`/conversions/${id}`)
 
         expect(response.status).toBe(400)
         expect(response.body.message).toEqual('Conversão não encontrada')
