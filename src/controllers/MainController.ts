@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import CreateConversion from '../services/CreateConversion'
+import DeleteConversion from '../services/DeleteConversion'
 import GetAllConversions from '../services/GetAllConversions'
 import GetOneConversion from '../services/GetOneConversion'
 
@@ -43,6 +44,28 @@ class ConversionController{
         }
 
         const result = await GetOneConversion.getOne(id)
+
+        if(result instanceof Error){
+            return res.status(400).json({
+                error: true,
+                message: result.message
+            })
+        }
+
+        return res.json(result)
+    }
+
+    async handleDeleteConversion(req: Request, res: Response){
+        const { id } = req.body
+
+        if(id === undefined){
+            return res.status(400).json({
+                error: true,
+                message: 'id é necessário para deletar um item'
+            })
+        }
+
+        const result = await DeleteConversion.delete(id)
 
         if(result instanceof Error){
             return res.status(400).json({

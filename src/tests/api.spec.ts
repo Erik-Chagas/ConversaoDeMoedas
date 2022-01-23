@@ -56,4 +56,26 @@ describe('Testing API calls', () => {
         expect(response.status).toBe(400)
         expect(response.body.message).toEqual('Conversão não encontrada')
     })
+
+    //DELETE
+    it("Should delete conversion of the specified id", async () => {
+        const { id } = exampleListObject
+
+        const response = await request(app).delete('/delete').send({id})
+        const checkDelete = await request(app).get('/getone').send({id})
+
+        expect(response.status).toBe(200)
+
+        expect(checkDelete.status).toBe(400)
+        expect(checkDelete.body.message).toEqual('Conversão não encontrada')
+    })
+
+    it("Should return an error for not finding the conversion of specified id for delete", async () => {
+        const id = Math.floor(Math.random() * 10000) + 1000
+
+        const response = await request(app).delete('/delete').send({id})
+
+        expect(response.status).toBe(400)
+        expect(response.body.message).toEqual('Conversão não encontrada')
+    })
 })
