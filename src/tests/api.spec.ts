@@ -29,4 +29,12 @@ describe('Testing API calls', () => {
         expect(response.status).toBe(200)
         expect(Object.keys(response.body).sort()).toEqual(['id', 'moedaOriginal', 'moedaDaConversão', 'valorEnviado', 'valorConvertido'].sort())
     })
+
+    //GET ALL
+    it("Should return all list objects", async () => {
+        const response = await request(app).get('/')
+
+        expect(response.status).toBe(200)
+        expect(response.body).toBeInstanceOf(Array)
+    })
 })

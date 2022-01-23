@@ -1,5 +1,6 @@
 import { createConnection, getConnection } from "typeorm"
 import CreateConversion, { conversionObject } from "../services/CreateConversion"
+import GetAllConversions from "../services/GetAllConversions"
 
 //TESTES UNITÁRIOS
 describe("Services layer", () => {
@@ -24,5 +25,12 @@ describe("Services layer", () => {
         exampleListObject = result
 
         expect(result).toHaveProperty('id')
+    })
+
+    //GET ALL
+    it("Should return all list objects", async () => {
+        const result = await GetAllConversions.getAll()
+
+        expect(result).toBeInstanceOf(Array)
     })
 })

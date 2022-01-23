@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import CreateConversion from '../services/CreateConversion'
+import GetAllConversions from '../services/GetAllConversions'
 
 class ConversionController{
     async handleCreateConversion(req: Request, res: Response){
@@ -21,6 +22,12 @@ class ConversionController{
             })
         }
         
+        return res.json(result)
+    }
+
+    async handleGetAllConversions(req: Request, res: Response){
+        const result = await GetAllConversions.getAll()
+
         return res.json(result)
     }
 }
