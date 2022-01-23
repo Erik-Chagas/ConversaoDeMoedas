@@ -1,6 +1,7 @@
 import { createConnection, getConnection } from "typeorm"
 import CreateConversion, { conversionObject } from "../services/CreateConversion"
 import GetAllConversions from "../services/GetAllConversions"
+import GetOneConversion from "../services/GetOneConversion"
 
 //TESTES UNITÁRIOS
 describe("Services layer", () => {
@@ -19,7 +20,7 @@ describe("Services layer", () => {
     })
 
     //CREATE
-    it("Should create a new list object in the database", async () => {
+    it("Should create a new conversion in the database", async () => {
         const result = await CreateConversion.create(exampleListObject)
 
         exampleListObject = result
@@ -28,9 +29,24 @@ describe("Services layer", () => {
     })
 
     //GET ALL
-    it("Should return all list objects", async () => {
+    it("Should return all conversions", async () => {
         const result = await GetAllConversions.getAll()
 
         expect(result).toBeInstanceOf(Array)
+    })
+
+    //GET ONE
+    it("Should return the conversion of the specified id", async () => {
+        const { id } = exampleListObject
+        const result = await GetOneConversion.getOne(id)
+        
+        expect(result).toMatchObject(exampleListObject)
+    })
+
+    it("Should return an error for not finding the conversion of specified id for get", async () => {
+        const id = Math.floor(Math.random() * 10000) + 1000
+        const result = await GetOneConversion.getOne(id)
+
+        expect(result).toEqual(new Error('Conversão não encontrada'))
     })
 })

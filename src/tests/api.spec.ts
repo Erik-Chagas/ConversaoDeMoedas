@@ -20,7 +20,7 @@ describe('Testing API calls', () => {
     })
     
     //CREATE
-    it('Should be able to create a new user', async () => {
+    it('Should be able to create a new conversion', async () => {
         const { moedaOriginal, moedaDaConversão, valorEnviado } = exampleListObject
 
         const response = await request(app).post('/create').send({moedaOriginal, moedaDaConversão, valorEnviado})
@@ -31,10 +31,29 @@ describe('Testing API calls', () => {
     })
 
     //GET ALL
-    it("Should return all list objects", async () => {
+    it("Should return all conversions", async () => {
         const response = await request(app).get('/')
 
         expect(response.status).toBe(200)
         expect(response.body).toBeInstanceOf(Array)
+    })
+
+    //GET ONE
+    it("Should return the conversion of the specified id", async () => {
+        const { id } = exampleListObject
+
+        const response = await request(app).get('/getone').send({id})
+
+        expect(response.status).toBe(200)
+        expect(response.body).toMatchObject(exampleListObject)
+    })
+
+    it("Should return an error for not finding the conversion of specified id for get", async () => {
+        const id = Math.floor(Math.random() * 10000) + 1000
+
+        const response = await request(app).get('/getone').send({id})
+
+        expect(response.status).toBe(400)
+        expect(response.body.message).toEqual('Conversão não encontrada')
     })
 })

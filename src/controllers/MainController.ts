@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import CreateConversion from '../services/CreateConversion'
 import GetAllConversions from '../services/GetAllConversions'
+import GetOneConversion from '../services/GetOneConversion'
 
 class ConversionController{
     async handleCreateConversion(req: Request, res: Response){
@@ -27,6 +28,28 @@ class ConversionController{
 
     async handleGetAllConversions(req: Request, res: Response){
         const result = await GetAllConversions.getAll()
+
+        return res.json(result)
+    }
+
+    async handleGetOneConversion(req: Request, res: Response){
+        const { id } = req.body
+
+        if(id === undefined){
+            return res.status(400).json({
+                error: true,
+                message: 'id é necessário para realizar a busca'
+            })
+        }
+
+        const result = await GetOneConversion.getOne(id)
+
+        if(result instanceof Error){
+            return res.status(400).json({
+                error: true,
+                message: result.message
+            })
+        }
 
         return res.json(result)
     }
